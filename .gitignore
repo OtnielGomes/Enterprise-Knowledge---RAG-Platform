@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+api/.venv/
+
+node_modules/
+web/.next/
+web/tsconfig.tsbuildinfo
+
+*.egg-info/

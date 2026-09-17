@@ -1,0 +1,167 @@
+:root {
+  --paper: #f3efe4;
+  --ink: #1c241c;
+  --muted: #5c6758;
+  --rule: #c9c1ae;
+  --panel: #fffdf7;
+  --forest: #1f4a3a;
+  --forest-dark: #16352a;
+  --stamp: #8b2e2e;
+  --stamp-bg: #f7ece8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, #faf6eb 0%, var(--paper) 42%),
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), "Source Sans 3", sans-serif;
+}
+
+h1,
+.cutoff dd {
+  font-family: var(--font-display), Literata, serif;
+}
+
+.page {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+.kicker {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.15rem;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.lede {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.cutoff {
+  display: grid;
+  gap: 0.2rem;
+  margin: 1.75rem 0 2rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+}
+
+.cutoff dt {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cutoff dd {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.cutoff p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-family: var(--font-body), "Source Sans 3", sans-serif;
+  font-weight: 400;
+}
+
+form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+label {
+  font-weight: 600;
+}
+
+textarea {
+  width: 100%;
+  min-height: 7.5rem;
+  padding: 0.85rem 0.9rem;
+  border: 1px solid #9aa392;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+}
+
+button {
+  justify-self: start;
+  padding: 0.7rem 1.15rem;
+  border: 0;
+  background: var(--forest);
+  color: #f4efe4;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: var(--forest-dark);
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.error,
+.refusal {
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--rule);
+}
+
+.error {
+  border-color: var(--stamp);
+  background: var(--stamp-bg);
+}
+
+.refusal {
+  background: var(--stamp-bg);
+  border-color: #d7b4ae;
+}
+
+.refusal p {
+  margin: 0;
+}
+
+.refusal strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--stamp);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
