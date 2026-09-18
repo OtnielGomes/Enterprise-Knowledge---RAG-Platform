@@ -1,0 +1,303 @@
+{
+  "annotator": "human",
+  "source": "snapshot Articles as of corpus_cutoff; not a model-written gabarito",
+  "corpus_cutoff": "2026-09-18",
+  "items": [
+    {
+      "id": "easy-direito-adquirido",
+      "category": "easy",
+      "question": "A participação no teletrabalho constitui direito adquirido?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "19",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-pgd-nao-e-direito",
+      "category": "easy",
+      "question": "A instituição e a manutenção do PGD constituem direito do agente público?",
+      "expected_act": "decreto-11072-2022",
+      "expected_article": "5",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-horas-extras",
+      "category": "easy",
+      "question": "É vedada a autorização de horas extras no teletrabalho?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "34",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-auxilio-moradia-integral",
+      "category": "easy",
+      "question": "O participante em teletrabalho integral recebe auxílio-moradia?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "37",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-percentual-exterior",
+      "category": "easy",
+      "question": "Quantos por cento das vagas do PGD podem residir no exterior?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "18",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-exterior-estagio-probatorio",
+      "category": "easy",
+      "question": "O teletrabalho com residência no exterior exige estágio probatório concluído?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "17",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-dispensa-frequencia",
+      "category": "easy",
+      "question": "A IN 24 dispensa os participantes do registro de controle de frequência e assiduidade?",
+      "expected_act": "in-conjunta-24-2023",
+      "expected_article": "8",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-diarias-passagens",
+      "category": "easy",
+      "question": "O participante do PGD fará jus a diárias e passagens em deslocamento eventual?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "35",
+      "must_abstain": false
+    },
+    {
+      "id": "temporal-262-vigencia",
+      "category": "temporal_current",
+      "question": "Quando a Resolução 262 entra em vigor?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "48",
+      "must_abstain": false
+    },
+    {
+      "id": "temporal-regime-parcial-unifesp",
+      "category": "temporal_current",
+      "question": "No instantâneo vigente, o teletrabalho Unifesp inclui regime parcial e integral?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "12",
+      "must_abstain": false
+    },
+    {
+      "id": "temporal-adicional-noturno",
+      "category": "temporal_current",
+      "question": "Fica vedado o pagamento de adicional noturno no teletrabalho integral?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "38",
+      "must_abstain": false
+    },
+    {
+      "id": "temporal-convocacao-presencial",
+      "category": "temporal_current",
+      "question": "Qual o prazo mínimo de convocação presencial do servidor em teletrabalho na Unifesp?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "20",
+      "must_abstain": false
+    },
+    {
+      "id": "temporal-current-does-not-cite-213",
+      "category": "temporal_current",
+      "question": "A Resolução 262/2025, atualmente vigente, quando entra em vigor?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "48",
+      "must_abstain": false
+    },
+    {
+      "id": "historical-213-vigencia",
+      "category": "historical",
+      "question": "Quando a resolução antiga de 2021, antes da 262, entra em vigor?",
+      "expected_act": "unifesp-resolucao-213-2021",
+      "expected_article": "50",
+      "must_abstain": false
+    },
+    {
+      "id": "historical-regra-2021",
+      "category": "historical",
+      "question": "Qual era a regra de 2021 para o teletrabalho na Unifesp?",
+      "expected_act": "unifesp-resolucao-213-2021",
+      "expected_article": "6",
+      "must_abstain": false
+    },
+    {
+      "id": "historical-antes-da-262",
+      "category": "historical",
+      "question": "Como funcionava o teletrabalho antes da 262?",
+      "expected_act": "unifesp-resolucao-213-2021",
+      "expected_article": "6",
+      "must_abstain": false
+    },
+    {
+      "id": "historical-auxilio-moradia-213",
+      "category": "historical",
+      "question": "Antes da 262, a resolução antiga de 2021 previa auxílio-moradia no teletrabalho integral?",
+      "expected_act": "unifesp-resolucao-213-2021",
+      "expected_article": "40",
+      "must_abstain": false
+    },
+    {
+      "id": "historical-horas-extras-213",
+      "category": "historical",
+      "question": "A norma revogada de 2021 vedava serviços extraordinários no programa de gestão?",
+      "expected_act": "unifesp-resolucao-213-2021",
+      "expected_article": "37",
+      "must_abstain": false
+    },
+    {
+      "id": "unanswerable-iof",
+      "category": "unanswerable",
+      "question": "Qual a alíquota do IOF para investimento no exterior?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "unanswerable-ferias",
+      "category": "unanswerable",
+      "question": "Quantos dias de férias o servidor em teletrabalho pode tirar?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "unanswerable-ticket-alimentacao",
+      "category": "unanswerable",
+      "question": "Quanto vale o ticket alimentação do servidor?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "unanswerable-moveis",
+      "category": "unanswerable",
+      "question": "A Unifesp reembolsa móveis de escritório para teletrabalho?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "unanswerable-salario",
+      "category": "unanswerable",
+      "question": "Qual o salário de um técnico-administrativo da Unifesp?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "unanswerable-passaporte",
+      "category": "unanswerable",
+      "question": "Como renovar o passaporte brasileiro?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "unanswerable-tabela-salarial",
+      "category": "unanswerable",
+      "question": "Qual a tabela salarial do plano de carreira dos TAEs?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "unanswerable-licenca-premio",
+      "category": "unanswerable",
+      "question": "Servidor em teletrabalho tem direito a quantos dias de licença-prêmio?",
+      "expected_act": null,
+      "expected_article": null,
+      "must_abstain": true,
+      "eval_class": "out_of_slice"
+    },
+    {
+      "id": "conflict-prioridade-vagas",
+      "category": "amendment_conflict",
+      "question": "Quando há mais interessados do que vagas no PGD, quem tem prioridade?",
+      "expected_act": "in-conjunta-24-2023",
+      "expected_article": "14",
+      "must_abstain": true,
+      "conflict_acts": ["in-conjunta-24-2023", "in-conjunta-21-2024"],
+      "eval_class": "conflict"
+    },
+    {
+      "id": "conflict-in21-revoga-prioridade",
+      "category": "amendment_conflict",
+      "question": "A IN 21 revogou os incisos I e II do art. 14 da IN 24?",
+      "expected_act": "in-conjunta-21-2024",
+      "expected_article": "2",
+      "must_abstain": true,
+      "conflict_acts": ["in-conjunta-24-2023", "in-conjunta-21-2024"],
+      "eval_class": "conflict"
+    },
+    {
+      "id": "conflict-gestante-estagio",
+      "category": "amendment_conflict",
+      "question": "Gestante em estágio probatório na Unifesp pode ingressar no PGD teletrabalho?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "13",
+      "must_abstain": true,
+      "conflict_acts": ["unifesp-resolucao-262-2025", "in-conjunta-21-2024"],
+      "eval_class": "conflict"
+    },
+    {
+      "id": "conflict-parcial-versus-integral",
+      "category": "amendment_conflict",
+      "question": "Na modalidade de teletrabalho, o que distingue o regime de execução parcial do integral?",
+      "expected_act": "in-conjunta-24-2023",
+      "expected_article": "10",
+      "must_abstain": true,
+      "conflict_acts": ["in-conjunta-24-2023", "in-conjunta-21-2024"],
+      "eval_class": "conflict"
+    },
+    {
+      "id": "chefia-assina-tcr",
+      "category": "chefia",
+      "question": "O chefe imediato deve assinar o TCR com o participante do programa de gestão?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "19",
+      "must_abstain": false
+    },
+    {
+      "id": "chefia-prazo-avaliacao-plano",
+      "category": "chefia",
+      "question": "Em quantos dias a chefia imediata avalia o Plano de Trabalho do participante?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "23",
+      "must_abstain": false
+    },
+    {
+      "id": "chefia-monitorar-teletrabalho",
+      "category": "chefia",
+      "question": "Compete à chefia imediata monitorar o teletrabalho?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "29",
+      "must_abstain": false
+    },
+    {
+      "id": "chefia-firma-plano-trabalho",
+      "category": "chefia",
+      "question": "Para aderir ao PGD, o agente público e a chefia imediata firmam plano de trabalho?",
+      "expected_act": "decreto-11072-2022",
+      "expected_article": "11",
+      "must_abstain": false
+    },
+    {
+      "id": "chefia-pactuar-tcr",
+      "category": "chefia",
+      "question": "Compete às chefias das unidades de execução pactuar o TCR?",
+      "expected_act": "in-conjunta-24-2023",
+      "expected_article": "25",
+      "must_abstain": false
+    }
+  ]
+}

@@ -49,3 +49,5 @@ pytest
 ```
 
 Tests hit Ask (in-process and HTTP). They do not inspect SQL or parser internals.
+
+The Portuguese golden set in `eval/golden_set.json` (~25–40 items) is scored only through Ask: expected Normative Act, expected Article, and `must_abstain`. Default items fail if they treat Resolução 213/2021 as Current; conflict items fail if Ask hides one of the acts. Run `python -m ask.golden_eval` from `api/`. Langfuse is not required.
