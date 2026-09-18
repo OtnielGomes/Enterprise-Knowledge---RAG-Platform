@@ -14,7 +14,7 @@ Ask on the Current snapshot: Unifesp Resolução CONSU 262/2025, Decreto 11.072/
 docker compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The Ask API is at [http://localhost:8000/ask](http://localhost:8000/ask).
+Open [http://localhost:3000](http://localhost:3000). The Ask API is at [http://127.0.0.1:8000/ask](http://127.0.0.1:8000/ask).
 
 Copy `.env.example` to `.env` and set `OPENAI_API_KEY` for model-written answers. With an empty key, Ask still indexes the Current snapshot and uses an extractive draft over retrieved Articles.
 
@@ -26,6 +26,7 @@ Copy `.env.example` to `.env` and set `OPENAI_API_KEY` for model-written answers
 | `EMBEDDING_MODEL` | Default `text-embedding-3-small` |
 | `CHAT_MODEL` | Default `gpt-4o-mini` |
 | `CORPUS_CUTOFF` | Fallback snapshot date (`YYYY-MM-DD`); the UI uses `snapshot/manifest.json` |
+| `WEB_ORIGIN` | Chat origin for CORS. Local default `http://localhost:3000`; on a droplet `http://<ip>:3000` |
 
 Do not commit a real API key.
 
@@ -35,9 +36,21 @@ Do not commit a real API key.
 - **FastAPI** owns Ask, snapshot ingest, retrieval, and the deterministic citation gate. No LLM-as-judge on the request path.
 - **Next.js** is one Portuguese chat shell — no login, dashboard, or ingest UI.
 - **PostgreSQL + pgvector** holds retrieval metadata. PDFs ship in the API image from `snapshot/`.
-- The same Compose file is the deploy shape (DigitalOcean droplet later). No MinIO, Redis, or extra vector database.
+- The same Compose file runs on a DigitalOcean droplet. Postgres and Ask bind to localhost; the recruiter-facing chat is port 3000. No MinIO, Redis, App Platform, Kubernetes, or PDF upload.
 
 Domain language: `CONTEXT.md`. Binding ADRs: `docs/adr/`.
+
+## Deploy
+
+A recruiter opens the chat in the browser. The droplet runs this same `compose.yaml` — not App Platform, Kubernetes, or a second architecture. Secrets stay in `.env` on the server, not in the image or git.
+
+From Git Bash or WSL, in the repo root:
+
+```bash
+bash scripts/deploy-droplet.sh
+```
+
+The wizard walks through the Docker 1-Click Droplet, copies this private repo over SSH, writes the remote `.env`, and runs `docker compose up --build`. Then open `http://<droplet-ip>:3000`. The Corpus Cutoff must match `snapshot/manifest.json`, not today's gazette. An easy Current Teletrabalho question should return a checkable Citation; an unsupported question should return Insufficient Evidence.
 
 ## Tests
 

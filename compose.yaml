@@ -13,7 +13,7 @@ services:
       timeout: 5s
       retries: 10
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
 
   api:
     build:
@@ -31,7 +31,7 @@ services:
       SNAPSHOT_DIR: /app/snapshot
       WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     healthcheck:
       test:
         [
