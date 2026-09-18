@@ -8,6 +8,8 @@ dependencies = [
   "uvicorn[standard]>=0.32",
   "pydantic-settings>=2.6",
   "psycopg[binary]>=3.2",
+  "pymupdf>=1.24",
+  "openai>=1.40",
 ]
 
 [project.optional-dependencies]

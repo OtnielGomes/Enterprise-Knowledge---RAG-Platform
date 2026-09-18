@@ -165,3 +165,28 @@ button:disabled {
   text-transform: uppercase;
   font-size: 0.78rem;
 }
+
+.answer {
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+}
+
+.answer p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.citations {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.citations a {
+  color: var(--forest);
+  font-weight: 600;
+}

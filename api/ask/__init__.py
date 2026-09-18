@@ -1,3 +1,3 @@
-from ask.service import AskResult, ask
+from ask.service import AskResult, Citation, ask
 
-__all__ = ["AskResult", "ask"]
+__all__ = ["AskResult", "Citation", "ask"]

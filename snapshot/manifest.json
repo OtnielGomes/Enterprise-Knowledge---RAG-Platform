@@ -1,0 +1,17 @@
+{
+  "corpus_cutoff": "2026-09-18",
+  "acts": [
+    {
+      "id": "unifesp-resolucao-262-2025",
+      "identity": "Resolução CONSU 262/2025",
+      "type": "resolucao",
+      "number": "262",
+      "year": 2025,
+      "status": "current",
+      "source_url": "https://site.unifesp.br/conselhos/images/docs/consu/resolucoes/2025/resolucao_262.pdf",
+      "retrieved_at": "2026-09-18",
+      "checksum_sha256": "2d3d16928a6f9396fb72f08c6d7a8689f57a456c5da9f05b85c5b70213bbc2b9",
+      "file": "unifesp-resolucao-262-2025.pdf"
+    }
+  ]
+}

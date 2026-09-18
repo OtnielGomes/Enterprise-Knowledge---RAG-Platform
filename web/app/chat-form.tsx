@@ -2,10 +2,18 @@
 
 import { FormEvent, useState } from "react";
 
+type Citation = {
+  act_id: string;
+  act_label: string;
+  article: string;
+  page: number;
+  pdf_url: string;
+};
+
 type AskResponse = {
   status: string;
   message: string;
-  citations: unknown[];
+  citations: Citation[];
   corpus_cutoff: string;
 };
 
@@ -57,7 +65,7 @@ export function ChatForm() {
           name="question"
           value={question}
           onChange={(event) => setQuestion(event.target.value)}
-          placeholder="Ex.: O teletrabalho é um direito do servidor?"
+          placeholder="Ex.: A participação no teletrabalho constitui direito adquirido?"
           required
         />
         <button type="submit" disabled={pending}>
@@ -68,6 +76,23 @@ export function ChatForm() {
       {result?.status === "insufficient_evidence" ? (
         <section className="refusal" aria-live="polite">
           <p>{result.message}</p>
+        </section>
+      ) : null}
+      {result?.status === "answered" ? (
+        <section className="answer" aria-live="polite">
+          <p>{result.message}</p>
+          {result.citations.length > 0 ? (
+            <ul className="citations">
+              {result.citations.map((citation) => (
+                <li key={`${citation.act_id}:${citation.article}:${citation.page}`}>
+                  <a href={citation.pdf_url} target="_blank" rel="noreferrer">
+                    {citation.act_label}, art. {citation.article}, p.{" "}
+                    {citation.page}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </section>
       ) : null}
     </>

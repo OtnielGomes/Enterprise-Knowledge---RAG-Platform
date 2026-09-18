@@ -2,8 +2,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY pyproject.toml ./
-COPY ask ./ask
+COPY api/pyproject.toml ./
+COPY api/ask ./ask
+COPY snapshot ./snapshot
+
+ENV SNAPSHOT_DIR=/app/snapshot
 
 RUN pip install --no-cache-dir .
 

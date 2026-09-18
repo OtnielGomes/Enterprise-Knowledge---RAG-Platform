@@ -16,7 +16,9 @@ services:
       - "5432:5432"
 
   api:
-    build: ./api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     depends_on:
       db:
         condition: service_healthy
@@ -25,7 +27,8 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-text-embedding-3-small}
       CHAT_MODEL: ${CHAT_MODEL:-gpt-4o-mini}
-      CORPUS_CUTOFF: ${CORPUS_CUTOFF:-2025-12-31}
+      CORPUS_CUTOFF: ${CORPUS_CUTOFF:-2026-09-18}
+      SNAPSHOT_DIR: /app/snapshot
       WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
     ports:
       - "8000:8000"
