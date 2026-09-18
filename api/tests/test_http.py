@@ -87,11 +87,53 @@ def test_snapshot_pdf_is_served_for_citation_checks():
         "decreto-11072-2022.pdf",
         "in-conjunta-24-2023.pdf",
         "in-conjunta-21-2024.pdf",
+        "unifesp-resolucao-213-2021.pdf",
     ],
 )
-def test_snapshot_pdf_is_served_for_remaining_current_acts(filename: str):
+def test_snapshot_pdf_is_served_for_indexed_acts(filename: str):
     response = client.get(f"/snapshot/{filename}")
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("application/pdf")
     assert response.content.startswith(b"%PDF")
+
+
+def test_post_ask_historical_question_cites_resolucao_213():
+    response = client.post(
+        "/ask",
+        json={
+            "question": (
+                "Quando a resolução antiga de 2021, antes da 262, entra em vigor?"
+            )
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    matching = [
+        citation
+        for citation in body["citations"]
+        if citation["act_label"] == "Resolução CONSU 213/2021"
+        and citation["article"] == "50"
+        and citation["page"] == 18
+    ]
+    assert matching
+    assert matching[0]["pdf_url"].endswith(
+        "/snapshot/unifesp-resolucao-213-2021.pdf#page=18"
+    )
+
+
+def test_post_ask_default_current_question_does_not_cite_resolucao_213():
+    response = client.post(
+        "/ask",
+        json={
+            "question": "A participação no teletrabalho constitui direito adquirido?"
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "answered"
+    assert all(
+        "213/2021" not in citation["act_label"] for citation in body["citations"]
+    )

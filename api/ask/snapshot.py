@@ -59,6 +59,10 @@ STOPWORDS = {
 
 DEFAULT_TOP_K = 6
 MIN_STRONG_COVERAGE = 0.4
+HISTORICAL_MARKERS = re.compile(
+    r"(?i)\b213\b|\b2021\b|antes\s+da\s+(?:resolu[cç][aã]o\s+)?262|"
+    r"resolu[cç][aã]o\s+antiga|regra\s+anterior|ato\s+revogado|norma\s+revogada"
+)
 WEAK_QUERY_TERMS = {
     "pgd",
     "servidor",
@@ -89,6 +93,8 @@ class NormativeActRecord:
     retrieved_at: date
     checksum_sha256: str
     file: str
+    supersedes: str | None = None
+    superseded_by: str | None = None
 
 
 @dataclass(frozen=True)
@@ -98,7 +104,51 @@ class SnapshotIndex:
     articles: tuple[RetrievedArticle, ...]
 
     def retrieve(self, question: str) -> list[RetrievedArticle]:
-        return rank_articles(question, self.articles)
+        current_articles, superseded_articles = self._articles_by_currency()
+        if not is_historical_question(question):
+            return rank_articles(question, current_articles)
+        superseded_hits = rank_articles(question, superseded_articles)
+        if not superseded_hits:
+            identities = " ".join(
+                act.identity for act in self.acts if _is_superseded(act)
+            )
+            superseded_hits = rank_articles(identities, superseded_articles)
+        current_hits = rank_articles(question, current_articles)
+        return _prefer(superseded_hits, current_hits)[:DEFAULT_TOP_K]
+
+    def _articles_by_currency(
+        self,
+    ) -> tuple[list[RetrievedArticle], list[RetrievedArticle]]:
+        current_ids = {act.id for act in self.acts if act.status == "current"}
+        current: list[RetrievedArticle] = []
+        superseded: list[RetrievedArticle] = []
+        for article in self.articles:
+            if article.act_id in current_ids:
+                current.append(article)
+            else:
+                superseded.append(article)
+        return current, superseded
+
+
+def is_historical_question(question: str) -> bool:
+    return bool(HISTORICAL_MARKERS.search(question))
+
+
+def _is_superseded(act: NormativeActRecord) -> bool:
+    return act.status == "superseded" or bool(act.superseded_by)
+
+
+def _prefer(
+    first: Sequence[RetrievedArticle], second: Sequence[RetrievedArticle]
+) -> list[RetrievedArticle]:
+    merged: list[RetrievedArticle] = []
+    seen: set[str] = set()
+    for article in (*first, *second):
+        if article.id in seen:
+            continue
+        seen.add(article.id)
+        merged.append(article)
+    return merged
 
 
 def _tokens(text: str) -> list[str]:
@@ -262,10 +312,10 @@ def load_snapshot(directory: str | None = None) -> SnapshotIndex:
             retrieved_at=date.fromisoformat(raw["retrieved_at"]),
             checksum_sha256=checksum,
             file=raw["file"],
+            supersedes=raw.get("supersedes"),
+            superseded_by=raw.get("superseded_by"),
         )
         acts.append(record)
-        if record.status != "current":
-            continue
         articles.extend(
             parse_articles(
                 pdf_path,

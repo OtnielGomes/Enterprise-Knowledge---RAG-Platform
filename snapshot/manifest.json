@@ -11,7 +11,21 @@
       "source_url": "https://site.unifesp.br/conselhos/images/docs/consu/resolucoes/2025/resolucao_262.pdf",
       "retrieved_at": "2026-09-18",
       "checksum_sha256": "2d3d16928a6f9396fb72f08c6d7a8689f57a456c5da9f05b85c5b70213bbc2b9",
-      "file": "unifesp-resolucao-262-2025.pdf"
+      "file": "unifesp-resolucao-262-2025.pdf",
+      "supersedes": "unifesp-resolucao-213-2021"
+    },
+    {
+      "id": "unifesp-resolucao-213-2021",
+      "identity": "Resolução CONSU 213/2021",
+      "type": "resolucao",
+      "number": "213",
+      "year": 2021,
+      "status": "superseded",
+      "superseded_by": "unifesp-resolucao-262-2025",
+      "source_url": "https://site.unifesp.br/conselhos/images/docs/consu/resolucoes/2021/Resolu%C3%A7%C3%A3o_213_Teletrabalho_13dezembro2021.pdf",
+      "retrieved_at": "2026-09-18",
+      "checksum_sha256": "0ebbdec32364503ffe3a2b5712102927a473d21a0cc39514dbe1c0ff710829a3",
+      "file": "unifesp-resolucao-213-2021.pdf"
     },
     {
       "id": "decreto-11072-2022",

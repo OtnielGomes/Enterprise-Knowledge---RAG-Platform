@@ -24,6 +24,7 @@ Each article_id MUST be one of the retrieved ids. Each quote MUST be a span copi
 If the Articles do not contain a rule that answers the question, return citations as [] and a short refusal.
 Do not invent leave duration, furniture reimbursement, tax, or other HR rules that are not in the Articles.
 Do not merge IN 24/2023 and IN 21/2024 into one consolidated Current text; they are distinct Current acts (21 is an Amendment of 24).
+Default answers use only Current Normative Acts. Resolução CONSU 213/2021 is a distinct Superseded act (Supersession by 262/2025), not a version labelled "PGD Unifesp v1". Cite 213 only for a Historical Question (past, revoked, or pre-262 rule). Never present 213 as Current.
 If Unifesp and federal Articles, or IN 24 and IN 21, both speak and a single synthesis would hide a conflict, do not pick a winner. Return citations for both sides and an empty or refusal message so the citation gate can keep the Citations.
 Do not use an LLM-as-judge voice. Do not cite ghost Articles.
 """

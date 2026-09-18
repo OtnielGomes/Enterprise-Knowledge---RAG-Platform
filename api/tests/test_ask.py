@@ -289,3 +289,64 @@ def test_ask_does_not_keep_a_single_winner_when_unifesp_and_federal_conflict():
     assert "Resolução CONSU 262/2025" in act_labels, result.citations
     assert "IN conjunta 21/2024" in act_labels, result.citations
     assert "IN 24 vigente" not in result.message
+
+
+def test_historical_question_cites_resolucao_213_when_it_entered_into_force():
+    result = ask(
+        "Quando a resolução antiga de 2021, antes da 262, entra em vigor?",
+        draft=extractive_draft,
+    )
+
+    matching = [
+        citation
+        for citation in result.citations
+        if "213/2021" in citation.act_label
+        and citation.article == "50"
+        and citation.page == 18
+    ]
+    assert matching, result.citations
+    assert matching[0].act_label == "Resolução CONSU 213/2021"
+    assert matching[0].pdf_url.endswith(
+        "/snapshot/unifesp-resolucao-213-2021.pdf#page=18"
+    )
+    assert all(
+        citation.act_label != "PGD Unifesp v1" for citation in result.citations
+    )
+
+
+def test_default_current_question_does_not_cite_resolucao_213():
+    result = ask(
+        "A participação no teletrabalho constitui direito adquirido?",
+        draft=extractive_draft,
+    )
+
+    assert result.status == "answered"
+    assert all("213/2021" not in citation.act_label for citation in result.citations)
+    assert any(
+        citation.act_label == "Resolução CONSU 262/2025" and citation.article == "19"
+        for citation in result.citations
+    )
+
+
+@pytest.mark.parametrize(
+    "question",
+    [
+        "Qual era a regra de 2021 para o teletrabalho na Unifesp?",
+        "Como funcionava o teletrabalho antes da 262?",
+        "O que a resolução antiga dizia sobre o programa de gestão teletrabalho?",
+    ],
+)
+def test_historical_question_examples_can_cite_resolucao_213(question: str):
+    result = ask(question, draft=extractive_draft)
+
+    matching = [
+        citation
+        for citation in result.citations
+        if citation.act_label == "Resolução CONSU 213/2021"
+        and citation.article
+        and citation.page
+    ]
+    assert matching, (question, result.citations)
+    assert all(
+        citation.act_label != "PGD Unifesp v1" for citation in result.citations
+    )
