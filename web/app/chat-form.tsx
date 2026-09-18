@@ -17,6 +17,23 @@ type AskResponse = {
   corpus_cutoff: string;
 };
 
+function CitationList({ citations }: { citations: Citation[] }) {
+  if (citations.length === 0) {
+    return null;
+  }
+  return (
+    <ul className="citations">
+      {citations.map((citation) => (
+        <li key={`${citation.act_id}:${citation.article}:${citation.page}`}>
+          <a href={citation.pdf_url} target="_blank" rel="noreferrer">
+            {citation.act_label}, art. {citation.article}, p. {citation.page}
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function ChatForm() {
   const [question, setQuestion] = useState("");
   const [pending, setPending] = useState(false);
@@ -76,23 +93,13 @@ export function ChatForm() {
       {result?.status === "insufficient_evidence" ? (
         <section className="refusal" aria-live="polite">
           <p>{result.message}</p>
+          <CitationList citations={result.citations} />
         </section>
       ) : null}
       {result?.status === "answered" ? (
         <section className="answer" aria-live="polite">
           <p>{result.message}</p>
-          {result.citations.length > 0 ? (
-            <ul className="citations">
-              {result.citations.map((citation) => (
-                <li key={`${citation.act_id}:${citation.article}:${citation.page}`}>
-                  <a href={citation.pdf_url} target="_blank" rel="noreferrer">
-                    {citation.act_label}, art. {citation.article}, p.{" "}
-                    {citation.page}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+          <CitationList citations={result.citations} />
         </section>
       ) : null}
     </>

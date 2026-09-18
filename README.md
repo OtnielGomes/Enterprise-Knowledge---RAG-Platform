@@ -6,9 +6,9 @@ This repository still uses a platform-shaped name. The product is this case (see
 
 ## Current slice
 
-Ask on Unifesp Resolução CONSU 262/2025 (`#3`). The act is snapshotted in `snapshot/`. `docker compose up` starts FastAPI, a single PT-BR chat route, and Postgres with pgvector. An easy Current Teletrabalho question returns a Citation (act, Article, page). Clicking the Citation opens the PDF at that page. Fabricated Citations are dropped; if none remain, Ask returns Insufficient Evidence.
+Ask on the Current snapshot: Unifesp Resolução CONSU 262/2025, Decreto 11.072/2022, IN conjunta 24/2023, and IN conjunta 21/2024 (`#4`). The acts are snapshotted in `snapshot/`. `docker compose up` starts FastAPI, a single PT-BR chat route, and Postgres with pgvector. An easy Current Teletrabalho question returns a Citation (act, Article, page). When Unifesp and federal acts both speak, both Citations can appear. IN 21 is an Amendment of IN 24, not a replacement; Ask does not merge them into a consolidated text and refuses to synthesize if that would hide a conflict, while still returning the Citations. Clicking a Citation opens the PDF at that page. Fabricated Citations are dropped; if none remain, Ask returns Insufficient Evidence.
 
-The remaining Current acts (Decreto 11.072/2022, IN 24/2023, IN 21/2024) and Superseded Resolução 213/2021 are later tickets.
+Superseded Resolução 213/2021 is a later ticket.
 
 ## Run
 
@@ -18,7 +18,7 @@ docker compose up --build
 
 Open [http://localhost:3000](http://localhost:3000). The Ask API is at [http://localhost:8000/ask](http://localhost:8000/ask).
 
-Copy `.env.example` to `.env` and set `OPENAI_API_KEY` for model-written answers. With an empty key, Ask still indexes 262 and uses an extractive draft over retrieved Articles.
+Copy `.env.example` to `.env` and set `OPENAI_API_KEY` for model-written answers. With an empty key, Ask still indexes the Current snapshot and uses an extractive draft over retrieved Articles.
 
 ## Environment
 

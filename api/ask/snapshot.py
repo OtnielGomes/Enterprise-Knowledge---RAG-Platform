@@ -151,7 +151,7 @@ def extractive_draft(
         return Draft(message=INSUFFICIENT_EVIDENCE_MESSAGE, citations=())
     citations = tuple(
         DraftCitation(article_id=article.id, quote=_quote_span(article.text))
-        for article in articles[:3]
+        for article in articles
     )
     message = (
         "Com base nos artigos recuperados do instantâneo: "
@@ -183,18 +183,32 @@ def parse_articles(
     act_id: str,
     act_label: str,
     pdf_url: str,
+    span_start: str | None = None,
+    span_end: str | None = None,
 ) -> list[RetrievedArticle]:
     full_text = _pdf_text_with_pages(pdf_path)
-    headings = list(ARTICLE_HEADING.finditer(full_text))
-    annex = ANNEX_START.search(full_text)
-    limit = annex.start() if annex else len(full_text)
+    start = full_text.find(span_start) if span_start else 0
+    if start < 0:
+        start = 0
+    end = len(full_text)
+    if span_end:
+        found_end = full_text.find(span_end, start + 1)
+        if found_end >= 0:
+            end = found_end
+    headings = [
+        match
+        for match in ARTICLE_HEADING.finditer(full_text)
+        if start <= match.start() < end
+    ]
+    annex = ANNEX_START.search(full_text, start, end)
+    limit = annex.start() if annex else end
     articles: list[RetrievedArticle] = []
     for index, match in enumerate(headings):
         if match.start() >= limit:
             break
         next_start = headings[index + 1].start() if index + 1 < len(headings) else limit
-        end = min(next_start, limit)
-        body = PAGE_MARK.sub(" ", full_text[match.start() : end])
+        article_end = min(next_start, limit)
+        body = PAGE_MARK.sub(" ", full_text[match.start() : article_end])
         body = " ".join(body.split())
         number = match.group(1)
         articles.append(
@@ -258,6 +272,8 @@ def load_snapshot(directory: str | None = None) -> SnapshotIndex:
                 act_id=record.id,
                 act_label=record.identity,
                 pdf_url=f"/snapshot/{record.file}",
+                span_start=raw.get("span_start"),
+                span_end=raw.get("span_end"),
             )
         )
     return SnapshotIndex(

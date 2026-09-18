@@ -12,6 +12,44 @@
       "retrieved_at": "2026-09-18",
       "checksum_sha256": "2d3d16928a6f9396fb72f08c6d7a8689f57a456c5da9f05b85c5b70213bbc2b9",
       "file": "unifesp-resolucao-262-2025.pdf"
+    },
+    {
+      "id": "decreto-11072-2022",
+      "identity": "Decreto 11.072/2022",
+      "type": "decreto",
+      "number": "11072",
+      "year": 2022,
+      "status": "current",
+      "source_url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/decreto/d11072.htm",
+      "retrieved_at": "2026-09-18",
+      "checksum_sha256": "ddc230fa18df41c30e535d7549c98cb62190fbb3b7943f37a944989e74f93837",
+      "file": "decreto-11072-2022.pdf",
+      "span_start": "DECRETO Nº 11.072",
+      "span_end": "DECRETO Nº 11.073"
+    },
+    {
+      "id": "in-conjunta-24-2023",
+      "identity": "IN conjunta 24/2023",
+      "type": "instrucao_normativa",
+      "number": "24",
+      "year": 2023,
+      "status": "current",
+      "source_url": "https://www.in.gov.br/web/dou/-/instrucao-normativa-conjunta-seges-sgprt-/mgi-n-24-de-28-de-julho-de-2023-499593248",
+      "retrieved_at": "2026-09-18",
+      "checksum_sha256": "3c2843de3c6b44668a40f23b4ef606e3f88a8ecaf53baeb6a7cfdf09caa7c483",
+      "file": "in-conjunta-24-2023.pdf"
+    },
+    {
+      "id": "in-conjunta-21-2024",
+      "identity": "IN conjunta 21/2024",
+      "type": "instrucao_normativa",
+      "number": "21",
+      "year": 2024,
+      "status": "current",
+      "source_url": "https://www.in.gov.br/en/web/dou/-/instrucao-normativa-conjunta-seges-sgp-srt/mgi-n-21-de-16-de-julho-de-2024-572617003",
+      "retrieved_at": "2026-09-18",
+      "checksum_sha256": "f20f8c73a92d77ace8b5057eebed1f3fa3c81e0b7604eba3a9a3b468a0b52b94",
+      "file": "in-conjunta-21-2024.pdf"
     }
   ]
 }
