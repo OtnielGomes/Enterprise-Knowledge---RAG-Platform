@@ -20,6 +20,7 @@ from ask.service import (
 )
 
 ARTICLE_HEADING = re.compile(r"(?m)^\s*Art\.?\s*(\d+)\s*[oº°ª]?", re.UNICODE)
+ANNEX_START = re.compile(r"(?m)^\s*ANEXO\b")
 PAGE_MARK = re.compile(r"\[\[PAGE (\d+)\]\]")
 TOKEN = re.compile(r"\w+", re.UNICODE)
 STOPWORDS = {
@@ -57,7 +58,16 @@ STOPWORDS = {
 }
 
 DEFAULT_TOP_K = 6
-MIN_RETRIEVE_SCORE = 1.5
+MIN_STRONG_COVERAGE = 0.4
+WEAK_QUERY_TERMS = {
+    "pgd",
+    "servidor",
+    "servidores",
+    "teletrabalho",
+    "tltra",
+    "unifesp",
+    "unidade",
+}
 
 
 def snapshot_dir() -> Path:
@@ -104,20 +114,26 @@ def rank_articles(
     articles: Sequence[RetrievedArticle],
     *,
     top_k: int = DEFAULT_TOP_K,
-    min_score: float = MIN_RETRIEVE_SCORE,
 ) -> list[RetrievedArticle]:
     query = set(_tokens(question))
+    query_strong = query - WEAK_QUERY_TERMS
     if not query:
         return []
     scored: list[tuple[float, RetrievedArticle]] = []
     for article in articles:
         overlap = query.intersection(_tokens(article.text))
-        if not overlap:
+        overlap_strong = overlap - WEAK_QUERY_TERMS
+        if not overlap_strong:
             continue
-        length = max(len(_tokens(article.text)), 1)
-        score = len(overlap) + (len(overlap) / (length ** 0.5))
-        if score >= min_score:
-            scored.append((score, article))
+        coverage = (
+            len(overlap_strong) / len(query_strong)
+            if query_strong
+            else len(overlap) / len(query)
+        )
+        if coverage < MIN_STRONG_COVERAGE and len(overlap_strong) < 2:
+            continue
+        score = coverage * 10 + len(overlap_strong)
+        scored.append((score, article))
     scored.sort(key=lambda item: item[0], reverse=True)
     return [article for _score, article in scored[:top_k]]
 
@@ -135,7 +151,7 @@ def extractive_draft(
         return Draft(message=INSUFFICIENT_EVIDENCE_MESSAGE, citations=())
     citations = tuple(
         DraftCitation(article_id=article.id, quote=_quote_span(article.text))
-        for article in articles
+        for article in articles[:3]
     )
     message = (
         "Com base nos artigos recuperados do instantâneo: "
@@ -170,9 +186,14 @@ def parse_articles(
 ) -> list[RetrievedArticle]:
     full_text = _pdf_text_with_pages(pdf_path)
     headings = list(ARTICLE_HEADING.finditer(full_text))
+    annex = ANNEX_START.search(full_text)
+    limit = annex.start() if annex else len(full_text)
     articles: list[RetrievedArticle] = []
     for index, match in enumerate(headings):
-        end = headings[index + 1].start() if index + 1 < len(headings) else len(full_text)
+        if match.start() >= limit:
+            break
+        next_start = headings[index + 1].start() if index + 1 < len(headings) else limit
+        end = min(next_start, limit)
         body = PAGE_MARK.sub(" ", full_text[match.start() : end])
         body = " ".join(body.split())
         number = match.group(1)

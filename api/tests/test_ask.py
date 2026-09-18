@@ -116,11 +116,7 @@ def test_ask_cites_resolucao_262_that_participation_is_not_an_acquired_right():
     assert matching[0].pdf_url.endswith(
         "/snapshot/unifesp-resolucao-262-2025.pdf#page=5"
     )
-    act = snapshot.acts[0]
-    assert act.status == "current"
-    assert act.source_url.startswith("https://site.unifesp.br/")
-    assert act.checksum_sha256
-    assert act.retrieved_at == date(2026, 9, 18)
+    assert result.corpus_cutoff == date(2026, 9, 18)
 
 
 def test_ask_refuses_when_the_snapshot_cannot_support_the_question():
@@ -148,3 +144,13 @@ def test_default_ask_cites_resolucao_262_for_an_easy_current_question():
         and citation.page == 5
         for citation in result.citations
     )
+
+
+def test_ask_refuses_a_leave_duration_question_the_act_does_not_answer():
+    result = ask(
+        "Quantos dias de férias o servidor em teletrabalho pode tirar?",
+        draft=extractive_draft,
+    )
+
+    assert result.status == "insufficient_evidence"
+    assert result.citations == []

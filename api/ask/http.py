@@ -73,10 +73,10 @@ def post_ask(body: AskRequest) -> dict[str, object]:
 def snapshot_pdf(filename: str) -> FileResponse:
     safe_name = Path(filename).name
     if safe_name != filename or Path(filename).suffix.lower() != ".pdf":
-        raise HTTPException(status_code=404, detail="Normative Act PDF not found")
+        raise HTTPException(status_code=404, detail="Normative Act not found")
     path = snapshot_dir() / safe_name
     if not path.is_file():
-        raise HTTPException(status_code=404, detail="Normative Act PDF not found")
+        raise HTTPException(status_code=404, detail="Normative Act not found")
     return FileResponse(path, media_type="application/pdf", filename=safe_name)
 
 
