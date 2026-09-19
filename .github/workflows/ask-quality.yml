@@ -1,0 +1,45 @@
+name: Ask quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  ask:
+    name: Ask pytest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    env:
+      OPENAI_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: api/pyproject.toml
+      - name: Install Ask with dev extras
+        run: python -m pip install -e ".[dev]"
+      - name: Run Ask tests including the Golden Set
+        run: pytest
+
+  chat:
+    name: Chat typecheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install chat shell dependencies
+        run: npm ci
+      - name: Typecheck the chat shell
+        run: npm run typecheck

@@ -65,3 +65,7 @@ _Avoid_: Source, reference, link, chunk id (as the user-facing concept)
 **Insufficient Evidence**:
 The single refusal state in v1: retrieved Articles cannot support an answer, or the question is outside the PGD telework snapshot. The assistant refuses rather than guessing. Eval may distinguish “out of slice” from “retrieve missed”; the Servidor sees one refusal.
 _Avoid_: Hallucination, no results, error, I don't know, empty retrieval, out of scope (as a user-facing state)
+
+**Golden Set**:
+A Portuguese collection of questions whose expected Normative Act, expected Article, and `must_abstain` are owned by a human annotator — the accepted measure of whether Ask is right.
+_Avoid_: RAGAS, traces, LLM-as-judge gabarito, eval dataset (as the source of truth)
