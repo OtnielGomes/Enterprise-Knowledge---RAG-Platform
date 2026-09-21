@@ -10,3 +10,10 @@ web/tsconfig.tsbuildinfo
 
 .env
 *.egg-info/
+
+.cursor/
+.agents/
+AGENTS.md
+CONTEXT.md
+skills-lock.json
+docs/
