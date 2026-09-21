@@ -198,7 +198,11 @@ def extractive_draft(
 ) -> Draft:
     del question
     if not articles:
-        return Draft(message=INSUFFICIENT_EVIDENCE_MESSAGE, citations=())
+        return Draft(
+            message=INSUFFICIENT_EVIDENCE_MESSAGE,
+            citations=(),
+            drafter="extractive",
+        )
     citations = tuple(
         DraftCitation(article_id=article.id, quote=_quote_span(article.text))
         for article in articles
@@ -207,7 +211,11 @@ def extractive_draft(
         "Com base nos artigos recuperados do instantâneo: "
         + " ".join(_quote_span(article.text, 120) for article in articles[:2])
     )
-    return Draft(message=message, citations=citations)
+    return Draft(
+        message=message,
+        citations=citations,
+        drafter="extractive",
+    )
 
 
 def _pdf_text_with_pages(pdf_path: Path) -> str:

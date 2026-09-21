@@ -22,7 +22,7 @@ def article_ids(snapshot_articles: dict[str, object]) -> set[str]:
 def test_golden_set_covers_annotator_owned_ask_categories():
     payload = load_golden_set()
     items = payload["items"]
-    assert 25 <= len(items) <= 40
+    assert 25 <= len(items) <= 48
     categories = {item["category"] for item in items}
     assert REQUIRED_CATEGORIES <= categories
     for item in items:
@@ -107,3 +107,35 @@ def test_eval_fails_when_a_conflict_item_hides_one_act(
     assert {citation.act_id for citation in result.citations} == {
         "in-conjunta-24-2023"
     }
+
+
+def test_golden_eval_command_refuses_require_openai_when_the_chat_key_is_empty():
+    from ask.golden_eval import main
+
+    assert main(["--require-openai"]) == 1
+
+
+def test_golden_eval_command_reports_extractive_drafter_when_the_chat_key_is_empty(
+    capsys: pytest.CaptureFixture[str],
+):
+    from ask.golden_eval import main
+
+    assert main([]) == 0
+    output = capsys.readouterr().out
+    assert "drafter=extractive" in output
+    assert "drafter=openai" not in output
+
+
+def test_openai_draft_names_openai_even_when_there_are_no_retrieved_articles():
+    from ask.generate import openai_draft
+
+    draft = openai_draft(
+        "Qual a alíquota do IOF para investimento no exterior?",
+        [],
+        client=object(),
+        model="unused",
+    )
+
+    assert draft.drafter == "openai"
+    assert draft.prompt_tokens is None
+    assert draft.completion_tokens is None

@@ -68,6 +68,47 @@
       "must_abstain": false
     },
     {
+      "id": "easy-unifesp-e-federal-direito",
+      "category": "easy",
+      "question": "A participação no teletrabalho Unifesp constitui direito adquirido do agente público?",
+      "expected_act": "unifesp-resolucao-262-2025",
+      "expected_article": "19",
+      "must_abstain": false,
+      "conflict_acts": ["unifesp-resolucao-262-2025", "decreto-11072-2022"]
+    },
+    {
+      "id": "easy-in21-lactantes",
+      "category": "easy",
+      "question": "Lactantes de filha ou filho de até dois anos de idade podem ser dispensadas do disposto nos parágrafos do art. 10?",
+      "expected_act": "in-conjunta-21-2024",
+      "expected_article": "1",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-decreto-retorno-trinta-dias",
+      "category": "easy",
+      "question": "O participante do PGD na modalidade teletrabalho deverá retornar no prazo de trinta dias se for excluído?",
+      "expected_act": "decreto-11072-2022",
+      "expected_article": "10",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-decreto-portaria-autarquia",
+      "category": "easy",
+      "question": "A instituição do PGD se dará no âmbito de cada autarquia por meio de portaria da autoridade máxima?",
+      "expected_act": "decreto-11072-2022",
+      "expected_article": "4",
+      "must_abstain": false
+    },
+    {
+      "id": "easy-decreto-diarias-deslocamento",
+      "category": "easy",
+      "question": "Nos deslocamentos em caráter eventual o participante do PGD fará jus a diárias segundo o Decreto 11.072?",
+      "expected_act": "decreto-11072-2022",
+      "expected_article": "13",
+      "must_abstain": false
+    },
+    {
       "id": "temporal-262-vigencia",
       "category": "temporal_current",
       "question": "Quando a Resolução 262 entra em vigor?",
@@ -105,6 +146,22 @@
       "question": "A Resolução 262/2025, atualmente vigente, quando entra em vigor?",
       "expected_act": "unifesp-resolucao-262-2025",
       "expected_article": "48",
+      "must_abstain": false
+    },
+    {
+      "id": "temporal-decreto-exterior-estagio",
+      "category": "temporal_current",
+      "question": "O teletrabalho com o agente público residindo no exterior somente será admitido para servidores públicos federais efetivos que tenham concluído o estágio?",
+      "expected_act": "decreto-11072-2022",
+      "expected_article": "12",
+      "must_abstain": false
+    },
+    {
+      "id": "temporal-decreto-atribuicoes-jornada",
+      "category": "temporal_current",
+      "question": "A participação no PGD independentemente da modalidade considerará as atribuições do cargo e respeitará a jornada de trabalho do participante?",
+      "expected_act": "decreto-11072-2022",
+      "expected_article": "8",
       "must_abstain": false
     },
     {
@@ -297,6 +354,14 @@
       "question": "Compete às chefias das unidades de execução pactuar o TCR?",
       "expected_act": "in-conjunta-24-2023",
       "expected_article": "25",
+      "must_abstain": false
+    },
+    {
+      "id": "chefia-in21-acompanhamento-estagio",
+      "category": "chefia",
+      "question": "Durante o primeiro ano de seu estágio probatório o trabalho do participante deverá ser acompanhado presencialmente pela chefia imediata?",
+      "expected_act": "in-conjunta-21-2024",
+      "expected_article": "1",
       "must_abstain": false
     }
   ]

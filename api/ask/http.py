@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 import logging
 from pathlib import Path
+import time
 
 import psycopg
 from fastapi import FastAPI, HTTPException
@@ -14,6 +15,7 @@ from ask.snapshot import load_snapshot, snapshot_dir
 from ask.store import persist_snapshot
 
 logger = logging.getLogger(__name__)
+ask_request_logger = logging.getLogger("uvicorn.error")
 settings = get_settings()
 
 
@@ -60,12 +62,28 @@ def _ask_payload(result: AskResult) -> dict[str, object]:
     }
 
 
+def _format_ask_log(result: AskResult, duration_ms: int) -> str:
+    parts = [
+        f"duration_ms={duration_ms}",
+        f"status={result.status}",
+        f"drafter={result.drafter}",
+    ]
+    if result.prompt_tokens is not None:
+        parts.append(f"prompt_tokens={result.prompt_tokens}")
+    if result.completion_tokens is not None:
+        parts.append(f"completion_tokens={result.completion_tokens}")
+    return "ask " + " ".join(parts)
+
+
 @app.post("/ask")
 def post_ask(body: AskRequest) -> dict[str, object]:
+    started = time.perf_counter()
     try:
         result = ask(body.question)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    duration_ms = int((time.perf_counter() - started) * 1000)
+    ask_request_logger.info(_format_ask_log(result, duration_ms))
     return _ask_payload(result)
 
 

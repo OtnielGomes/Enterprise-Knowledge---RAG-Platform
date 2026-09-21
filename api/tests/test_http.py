@@ -1,9 +1,18 @@
+import logging
+
 import pytest
 from fastapi.testclient import TestClient
 
 from ask.http import app
+from ask.settings import get_settings
 
 client = TestClient(app)
+
+SERVIDOR_ASK_FIELDS = {"status", "message", "citations", "corpus_cutoff"}
+
+
+def _assert_servidor_ask_body(body: dict) -> None:
+    assert set(body) == SERVIDOR_ASK_FIELDS
 
 
 def test_post_ask_returns_insufficient_evidence_when_the_snapshot_cannot_answer():
@@ -14,6 +23,7 @@ def test_post_ask_returns_insufficient_evidence_when_the_snapshot_cannot_answer(
 
     assert response.status_code == 200
     body = response.json()
+    _assert_servidor_ask_body(body)
     assert body["status"] == "insufficient_evidence"
     assert body["citations"] == []
     assert "Evidência insuficiente" in body["message"]
@@ -30,6 +40,7 @@ def test_post_ask_cites_resolucao_262_for_an_easy_current_question():
 
     assert response.status_code == 200
     body = response.json()
+    _assert_servidor_ask_body(body)
     assert body["status"] == "answered"
     matching = [
         citation
@@ -60,6 +71,7 @@ def test_post_ask_refuses_to_synthesize_in_24_and_in_21_without_dropping_citatio
 
     assert response.status_code == 200
     body = response.json()
+    _assert_servidor_ask_body(body)
     assert body["status"] == "insufficient_evidence"
     assert "Evidência insuficiente" in body["message"]
     labels = {citation["act_label"] for citation in body["citations"]}
@@ -110,6 +122,7 @@ def test_post_ask_historical_question_cites_resolucao_213():
 
     assert response.status_code == 200
     body = response.json()
+    _assert_servidor_ask_body(body)
     matching = [
         citation
         for citation in body["citations"]
@@ -133,7 +146,60 @@ def test_post_ask_default_current_question_does_not_cite_resolucao_213():
 
     assert response.status_code == 200
     body = response.json()
+    _assert_servidor_ask_body(body)
     assert body["status"] == "answered"
     assert all(
         "213/2021" not in citation["act_label"] for citation in body["citations"]
     )
+
+
+def test_post_ask_logs_duration_status_and_extractive_drafter(
+    caplog: pytest.LogCaptureFixture,
+):
+    with caplog.at_level(logging.INFO, logger="uvicorn.error"):
+        response = client.post(
+            "/ask",
+            json={"question": "Qual a alíquota do IOF para investimento no exterior?"},
+        )
+
+    assert response.status_code == 200
+    body = response.json()
+    _assert_servidor_ask_body(body)
+    log_text = caplog.text
+    assert "duration_ms=" in log_text
+    assert f"status={body['status']}" in log_text
+    assert "drafter=extractive" in log_text
+    assert "prompt_tokens=" not in log_text
+    assert "completion_tokens=" not in log_text
+
+
+def test_post_ask_logs_extractive_drafter_when_chat_model_falls_back(
+    caplog: pytest.LogCaptureFixture,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test-not-a-real-key")
+    get_settings.cache_clear()
+
+    def fail_openai(*_args, **_kwargs):
+        raise RuntimeError("chat model unavailable")
+
+    monkeypatch.setattr("ask.generate.openai_draft", fail_openai)
+    try:
+        with caplog.at_level(logging.INFO, logger="uvicorn.error"):
+            response = client.post(
+                "/ask",
+                json={
+                    "question": (
+                        "A participação no teletrabalho constitui direito adquirido?"
+                    )
+                },
+            )
+    finally:
+        monkeypatch.setenv("OPENAI_API_KEY", "")
+        get_settings.cache_clear()
+
+    assert response.status_code == 200
+    _assert_servidor_ask_body(response.json())
+    assert "drafter=extractive" in caplog.text
+    assert "duration_ms=" in caplog.text
+    assert "status=" in caplog.text

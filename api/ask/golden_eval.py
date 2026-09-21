@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
 from ask.service import AskResult
+from ask.settings import get_settings
 from ask.snapshot import load_snapshot
 
 SUPERSEDED_ACT_ID = "unifesp-resolucao-213-2021"
@@ -84,14 +86,39 @@ def evaluate_golden_set(
     for item in load_golden_set(path)["items"]:
         result = ask(item["question"])
         failures = evaluate_item(item, result, article_ids)
-        rows.append({"id": item["id"], "failures": failures, "status": result.status})
+        rows.append(
+            {
+                "id": item["id"],
+                "failures": failures,
+                "status": result.status,
+                "drafter": result.drafter,
+            }
+        )
     return rows
 
 
-def main() -> int:
+def _run_drafter(rows: list[dict]) -> str:
+    drafters = {row["drafter"] for row in rows}
+    if drafters == {"openai"}:
+        return "openai"
+    return "extractive"
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--require-openai",
+        action="store_true",
+        help="fail if the chat-model key is empty",
+    )
+    args = parser.parse_args(argv)
+    if args.require_openai and not get_settings().openai_api_key:
+        print("OPENAI_API_KEY is empty; refusing to run with --require-openai")
+        return 1
     rows = evaluate_golden_set()
     failed = [row for row in rows if row["failures"]]
     print(f"{len(rows) - len(failed)}/{len(rows)} golden items passed through Ask")
+    print(f"drafter={_run_drafter(rows)}")
     for row in failed:
         print(f"{row['id']}: {row['failures']} ({row['status']})")
     return 1 if failed else 0

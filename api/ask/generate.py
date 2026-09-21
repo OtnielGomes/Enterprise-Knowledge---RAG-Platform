@@ -51,7 +51,11 @@ def openai_draft(
     model: str,
 ) -> Draft:
     if not articles:
-        return Draft(message=INSUFFICIENT_EVIDENCE_MESSAGE, citations=())
+        return Draft(
+            message=INSUFFICIENT_EVIDENCE_MESSAGE,
+            citations=(),
+            drafter="openai",
+        )
     completion = client.chat.completions.create(
         model=model,
         temperature=0,
@@ -77,9 +81,15 @@ def openai_draft(
         for item in payload.get("citations", [])
         if isinstance(item, dict)
     )
+    usage = completion.usage
+    prompt_tokens = usage.prompt_tokens if usage is not None else None
+    completion_tokens = usage.completion_tokens if usage is not None else None
     return Draft(
         message=str(payload.get("message") or INSUFFICIENT_EVIDENCE_MESSAGE),
         citations=citations,
+        drafter="openai",
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
     )
 
 

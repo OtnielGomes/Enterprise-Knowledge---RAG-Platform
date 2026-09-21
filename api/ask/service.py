@@ -31,10 +31,16 @@ class DraftCitation:
     quote: str | None = None
 
 
+DrafterName = Literal["openai", "extractive"]
+
+
 @dataclass(frozen=True)
 class Draft:
     message: str
     citations: Sequence[DraftCitation] = field(default_factory=tuple)
+    drafter: DrafterName = "extractive"
+    prompt_tokens: int | None = None
+    completion_tokens: int | None = None
 
 
 @dataclass(frozen=True)
@@ -52,6 +58,9 @@ class AskResult:
     message: str
     citations: list[Citation]
     corpus_cutoff: date
+    drafter: DrafterName = "extractive"
+    prompt_tokens: int | None = None
+    completion_tokens: int | None = None
 
 
 Retriever = Callable[[str], Sequence[RetrievedArticle]]
@@ -169,14 +178,34 @@ def _merge_citations(
     return merged
 
 
-def _refuse_to_synthesize(
-    citations: list[Citation], cutoff: date
+def _ask_result(
+    *,
+    status: AskStatus,
+    message: str,
+    citations: list[Citation],
+    cutoff: date,
+    draft: Draft,
 ) -> AskResult:
     return AskResult(
+        status=status,
+        message=message,
+        citations=citations,
+        corpus_cutoff=cutoff,
+        drafter=draft.drafter,
+        prompt_tokens=draft.prompt_tokens,
+        completion_tokens=draft.completion_tokens,
+    )
+
+
+def _refuse_to_synthesize(
+    citations: list[Citation], cutoff: date, draft: Draft
+) -> AskResult:
+    return _ask_result(
         status="insufficient_evidence",
         message=INSUFFICIENT_EVIDENCE_MESSAGE,
         citations=citations,
-        corpus_cutoff=cutoff,
+        cutoff=cutoff,
+        draft=draft,
     )
 
 
@@ -203,6 +232,7 @@ def ask(
                 _citations_for_acts(retrieved, set(AMENDMENT_ACT_IDS)),
             ),
             cutoff,
+            produced,
         )
 
     if UNIFESP_ACT_ID in retrieved_acts and retrieved_acts & FEDERAL_ACT_IDS:
@@ -218,15 +248,17 @@ def ask(
                 )
 
     if not citations:
-        return AskResult(
+        return _ask_result(
             status="insufficient_evidence",
             message=INSUFFICIENT_EVIDENCE_MESSAGE,
             citations=[],
-            corpus_cutoff=cutoff,
+            cutoff=cutoff,
+            draft=produced,
         )
-    return AskResult(
+    return _ask_result(
         status="answered",
         message=produced.message,
         citations=citations,
-        corpus_cutoff=cutoff,
+        cutoff=cutoff,
+        draft=produced,
     )
