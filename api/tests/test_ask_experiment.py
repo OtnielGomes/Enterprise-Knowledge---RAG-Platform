@@ -515,6 +515,10 @@ def test_default_publisher_mirrors_the_host_and_keeps_earlier_experiments(
         "unifesp-resolucao-262-2025",
         "in-conjunta-24-2023",
     ]
+    assert kept.outputs["expected_act"] == "unifesp-resolucao-262-2025"
+    assert "message" not in kept.outputs
+    assert "latency_ms" not in kept.outputs
+    assert "prompt_tokens" not in kept.outputs
     names = [project.name for project in host.projects]
     assert "earlier-experiment" in names
     fresh = [name for name in names if name != "earlier-experiment"]
@@ -529,7 +533,8 @@ def test_default_publisher_mirrors_the_host_and_keeps_earlier_experiments(
     }
     assert host.runs[0]["prompt_tokens"] == 11
     assert host.runs[0]["completion_tokens"] == 7
-    assert host.runs[0]["extra"]["metadata"]["chat_model"] == "gpt-test"
+    assert host.runs[0]["outputs"]["message"] == "Resposta do modelo."
+    assert "extra" not in host.runs[0]
     assert "total_tokens" not in host.runs[0]
     blob = json.dumps(host.recorded, default=str).lower()
     assert "price" not in blob

@@ -287,7 +287,6 @@ def publish_experiment(record: AskExperimentRecord, *, client: Any) -> None:
             project_name=project.name,
             outputs=_run_outputs(item),
             reference_example_id=example_ids[item.id],
-            extra={"metadata": {"chat_model": record.chat_model}},
             prompt_tokens=item.prompt_tokens,
             completion_tokens=item.completion_tokens,
             start_time=start,
@@ -316,7 +315,13 @@ def _example_bodies(
         "must_abstain": item.must_abstain,
         "conflict_acts": list(item.conflict_acts),
     }
-    return inputs, _run_outputs(item), {"golden_item_id": item.id}
+    outputs = {
+        "expected_act": item.expected_act,
+        "expected_article": item.expected_article,
+        "must_abstain": item.must_abstain,
+        "conflict_acts": list(item.conflict_acts),
+    }
+    return inputs, outputs, {"golden_item_id": item.id}
 
 
 def _run_outputs(item: PublishedItem) -> dict[str, Any]:
