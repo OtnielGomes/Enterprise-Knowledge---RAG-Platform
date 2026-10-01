@@ -24,6 +24,39 @@ ARTICLE_19 = RetrievedArticle(
 )
 
 
+def test_model_error_still_falls_back_to_the_extractive_draft(monkeypatch: pytest.MonkeyPatch):
+    from ask.generate import default_drafter
+    from ask.settings import get_settings
+
+    class FailingCompletions:
+        @staticmethod
+        def create(**kwargs: object) -> object:
+            del kwargs
+            raise RuntimeError("model down")
+
+    class FailingChat:
+        completions = FailingCompletions()
+
+    class FailingClient:
+        def __init__(self, **kwargs: object) -> None:
+            del kwargs
+            self.chat = FailingChat()
+
+    with monkeypatch.context() as patch:
+        patch.setenv("OPENAI_API_KEY", "test-key")
+        get_settings.cache_clear()
+        patch.setattr("ask.generate.OpenAI", FailingClient)
+        draft = default_drafter()
+        result = draft(
+            "A participação no teletrabalho constitui direito adquirido?",
+            [ARTICLE_19],
+        )
+
+    get_settings.cache_clear()
+    assert result.drafter == "extractive"
+    assert result.citations
+
+
 def test_ask_returns_insufficient_evidence_for_a_teletrabalho_question():
     result = ask(
         "Qual a alíquota do IOF para investimento no exterior?",
