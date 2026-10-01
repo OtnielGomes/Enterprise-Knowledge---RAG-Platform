@@ -11,6 +11,7 @@ web/tsconfig.tsbuildinfo
 .env
 *.egg-info/
 
+# public-readme-deny
 .cursor/
 .agents/
 AGENTS.md
