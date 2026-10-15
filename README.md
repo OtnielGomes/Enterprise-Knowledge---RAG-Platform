@@ -13,9 +13,6 @@
 
 A Unifesp assistant for **PGD Teletrabalho**: a technical-administrative **Servidor** asks about currently effective telework rules and receives a cited answer from a dated snapshot of numbered **Normative Acts** — or an explicit **Insufficient Evidence** refusal.
 
-> [!IMPORTANT]
-> v1 is not a generic enterprise RAG platform. The repository name is leftover from an earlier framing. The product is this case: one corpus, one Ask seam, checkable Citations. Leave, reimbursement, contracts, FAQ, PDF upload, live gazette crawl, login, and dashboards are out of v1.
-
 ## Overview
 
 The assistant knows five numbered acts copied into [`snapshot/`](snapshot/), with a **Corpus Cutoff** of **18 September 2026**. Answers are true as of that date, not as of today's official gazette.
