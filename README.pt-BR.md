@@ -13,8 +13,6 @@
 
 Assistente da Unifesp para o **PGD Teletrabalho**: um **Servidor** técnico-administrativo pergunta sobre as regras vigentes de teletrabalho e recebe uma resposta citada a partir de um snapshot datado de **atos normativos** numerados — ou uma recusa explícita de **evidência insuficiente**.
 
-> [!IMPORTANT]
-> A v1 não é uma plataforma RAG empresarial genérica. O nome do repositório é resíduo de um recorte anterior. O produto é este caso: um corpus, uma costura Ask, Citações conferíveis. Férias, reembolso, contratos, FAQ, upload de PDF, crawl ao vivo do diário oficial, login e painéis ficam fora da v1.
 
 ## Visão geral
 
